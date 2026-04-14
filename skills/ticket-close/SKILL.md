@@ -1,5 +1,5 @@
 ---
-name: ticket-closure-helper
+name: ticket-close
 description: Prepare final Jira closure content after implementation has been reviewed and approved. This skill should be used only when an approved change summary needs to be turned into a concise final ticket comment, QA closure note, closure summary, and status update for future readers, without writing or modifying code.
 progressive_disclosure:
   entry_point:
@@ -15,13 +15,15 @@ progressive_disclosure:
     - references/title-format-guide.md
 ---
 
-# Ticket Closure Helper
+# Ticket Close
 
 ## Overview
 
 Use this skill to create the final communication artifacts for a Jira ticket after the work is approved. Read Jira context when available, accept the approved change summary, and produce a concise final ticket comment, QA closure note, short closure summary, and optional release-note-style summary that future readers can scan quickly.
 
 Keep the workflow closure-only. Do not implement code, re-review the patch, or turn the output into an automated close-ticket action.
+
+Always respond in the user's current language. If the user writes in Vietnamese, reply in Vietnamese. If the user writes in English, reply in English. Keep technical terms in their original form when that is clearer.
 
 ## When to Use This Skill
 
@@ -156,6 +158,6 @@ Stop and correct course when:
 
 ## Integration Notes
 
-- Use after `change-summarizer` or any approved implementation summary.
+- Use after `ticket-summary` or any approved implementation summary.
 - Pair naturally with Jira workflows that require a final human-readable closure comment.
 - Use the optional release-note-style section only when it adds value beyond the ticket itself.

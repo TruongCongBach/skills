@@ -1,5 +1,5 @@
 ---
-name: implementation-reviewer
+name: ticket-review
 description: Review completed implementations against Jira requirements, acceptance criteria, screenshot or design-image references, UX expectations, and engineering quality standards. This skill should be used after code has been written and before finalizing the work, when practical review findings, correction guidance, state coverage checks, and test gap detection are needed without automatically committing changes or closing the ticket.
 progressive_disclosure:
   entry_point:
@@ -17,13 +17,15 @@ progressive_disclosure:
     - references/title-format-guide.md
 ---
 
-# Implementation Reviewer
+# Ticket Review
 
 ## Overview
 
 Use this skill to review a completed implementation before finalizing the work. Read Jira ticket data through MCP when available, compare the implementation against the ticket, acceptance criteria, and screenshot or design-image references when provided, and produce practical correction guidance focused on real delivery quality.
 
 Keep the workflow review-oriented. Identify what appears correct, what is incomplete, what likely mismatches the ticket or UX intent, what states or tests are missing, and what should be corrected next. Do not automatically commit changes or close the ticket.
+
+Always respond in the user's current language. If the user writes in Vietnamese, reply in Vietnamese. If the user writes in English, reply in English. Keep technical terms in their original form when that is clearer.
 
 ## When to Use This Skill
 
@@ -175,6 +177,6 @@ Stop and correct course when:
 ## Integration Notes
 
 - Use with Jira MCP to refresh ticket facts during review.
-- Pair naturally with `ticket-analyzer` and `fix-planner` as earlier phases.
+- Pair naturally with `ticket-analysis` and `ticket-planner` as earlier phases.
 - Use image review only as a supportive reference when design tooling is not available.
 - Hand off corrections to implementation work only after the user approves the review findings.

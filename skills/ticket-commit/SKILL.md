@@ -1,5 +1,5 @@
 ---
-name: scoped-commit-helper
+name: ticket-commit
 description: Prepare and perform issue-scoped commits for Jira work. This skill should be used after implementation is ready to commit, when the current git changes need to be reviewed conservatively, unrelated files need to be excluded, and only files that are clearly relevant to the current Jira issue should be staged and committed with the standard title format.
 progressive_disclosure:
   entry_point:
@@ -15,13 +15,15 @@ progressive_disclosure:
     - references/commit-message-format-guide.md
 ---
 
-# Scoped Commit Helper
+# Ticket Commit
 
 ## Overview
 
 Use this skill to prepare and optionally perform a clean commit for one Jira issue without pulling in unrelated work. Read Jira ticket context when available, inspect the current git changes, classify files conservatively, generate the standard commit title, and stage only the files that clearly belong to the issue.
 
 Keep the workflow commit-safety focused. Do not push, do not modify ticket status, do not comment on the ticket, and do not include uncertain files automatically.
+
+Always respond in the user's current language. If the user writes in Vietnamese, reply in Vietnamese. If the user writes in English, reply in English. Keep technical terms in their original form when that is clearer.
 
 ## When to Use This Skill
 
@@ -157,6 +159,6 @@ Stop and correct course when:
 
 ## Integration Notes
 
-- Use after `implementation-reviewer` confirms the work is acceptable.
-- Use before `change-summarizer` and `ticket-closure-helper` when a clean commit should exist first.
+- Use after `ticket-review` confirms the work is acceptable.
+- Use before `ticket-summary` and `ticket-close` when a clean commit should exist first.
 - Use explicit skill invocation on machines with many installed skills to avoid overlap with review or summary skills.

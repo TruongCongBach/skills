@@ -1,5 +1,5 @@
 ---
-name: change-summarizer
+name: ticket-summary
 description: Summarize completed fixes or features for engineering handoff, QA context, and future readers before final ticket closure messaging. This skill should be used after implementation and review context exist, when a concise but complete explanation of root cause, fix approach, changed areas, regression risks, and validation focus is needed without writing or modifying code.
 progressive_disclosure:
   entry_point:
@@ -16,13 +16,15 @@ progressive_disclosure:
     - references/title-format-guide.md
 ---
 
-# Change Summarizer
+# Ticket Summary
 
 ## Overview
 
 Use this skill to explain a completed fix or feature in a way that engineers and QA can understand quickly. Read Jira ticket context when available, read implementation, diff, or review summaries, then produce a structured handoff that explains the root cause, fix approach, changed areas, regression risks, and QA focus without requiring the reader to parse the full diff.
 
 Keep the workflow summarization-only. Do not implement code, rewrite the patch, or turn the summary into a commit workflow.
+
+Always respond in the user's current language. If the user writes in Vietnamese, reply in Vietnamese. If the user writes in English, reply in English. Keep technical terms in their original form when that is clearer.
 
 ## When to Use This Skill
 
@@ -155,5 +157,5 @@ Stop and correct course when:
 ## Integration Notes
 
 - Use with Jira-backed workflows when ticket context is available.
-- Pair naturally after `implementation-reviewer` and before `ticket-closure-helper`.
+- Pair naturally after `ticket-review` and before `ticket-close`.
 - Use as the explanation layer for engineering handoff and QA context, not as the final Jira closure record.

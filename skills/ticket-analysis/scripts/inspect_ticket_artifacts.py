@@ -85,7 +85,7 @@ def detect_kind(path: Path) -> str:
 
 
 def summarize_zip(path: Path, slow_ms: int, top: int) -> None:
-    with tempfile.TemporaryDirectory(prefix="ticket-analyzer-") as tmpdir:
+    with tempfile.TemporaryDirectory(prefix="ticket-analysis-") as tmpdir:
         with zipfile.ZipFile(path) as archive:
             archive.extractall(tmpdir)
             names = archive.namelist()

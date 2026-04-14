@@ -4,11 +4,11 @@ Use this workflow to keep the skills from overlapping during normal ticket work.
 
 ## Sequence
 
-1. `ticket-analyzer`
+1. `ticket-analysis`
    Use when the ticket is still being understood.
    Output: issue summary, expected vs actual behavior, ambiguities, likely root causes, readiness decision.
 
-2. `fix-planner`
+2. `ticket-planner`
    Use after the problem is clear enough to compare implementation directions.
    Output: recommended approach, affected areas, risks, edge cases, suggested tests.
 
@@ -16,38 +16,38 @@ Use this workflow to keep the skills from overlapping during normal ticket work.
    Use when writing or refactoring code.
    Output: implementation discipline and verification expectations.
 
-4. `implementation-reviewer`
+4. `ticket-review`
    Use after code exists and needs review against Jira, UX, and quality expectations.
    Output: review findings, missing states, test gaps, required changes, QA checklist, ready vs needs revision.
 
-5. `scoped-commit-helper`
+5. `ticket-commit`
    Use after the implementation is approved and you need a clean, issue-scoped commit.
    Output: changed-file review, recommended files to stage, excluded files, commit title, safe to commit vs review needed.
 
-6. `change-summarizer`
+6. `ticket-summary`
    Use after the implementation is effectively done and you need a clear engineering and QA-facing summary.
    Output: root cause, fix approach, what changed, affected areas, regression risks, QA focus, short summaries.
 
-7. `ticket-closure-helper`
+7. `ticket-close`
    Use only after the work is approved and the next step is final Jira communication.
    Output: final ticket comment, QA closure note, closure summary, concise status update.
 
 ## Boundary Rules
 
-- `ticket-analyzer` decides whether the ticket is ready to build.
-- `fix-planner` decides how the work should likely be built.
-- `implementation-reviewer` decides whether the built work is actually acceptable.
-- `scoped-commit-helper` decides what is safe to include in the issue commit.
-- `change-summarizer` explains the completed change for humans.
-- `ticket-closure-helper` writes the final Jira closure message.
+- `ticket-analysis` decides whether the ticket is ready to build.
+- `ticket-planner` decides how the work should likely be built.
+- `ticket-review` decides whether the built work is actually acceptable.
+- `ticket-commit` decides what is safe to include in the issue commit.
+- `ticket-summary` explains the completed change for humans.
+- `ticket-close` writes the final Jira closure message.
 
 ## Practical Prompting
 
 When several skills could plausibly match, invoke the skill by name:
 
-- `Use ticket-analyzer for this Jira bug.`
-- `Use fix-planner to compare implementation approaches.`
-- `Use implementation-reviewer to review this completed work.`
-- `Use scoped-commit-helper to prepare a clean commit for this issue.`
-- `Use change-summarizer to write the engineering handoff.`
-- `Use ticket-closure-helper to draft the final Jira closure comment.`
+- `Use ticket-analysis for this Jira bug.`
+- `Use ticket-planner to compare implementation approaches.`
+- `Use ticket-review to review this completed work.`
+- `Use ticket-commit to prepare a clean commit for this issue.`
+- `Use ticket-summary to write the engineering handoff.`
+- `Use ticket-close to draft the final Jira closure comment.`

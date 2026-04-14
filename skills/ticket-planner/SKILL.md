@@ -1,5 +1,5 @@
 ---
-name: fix-planner
+name: ticket-planner
 description: Create implementation plans after ticket analysis but before coding. This skill should be used when a Jira ticket, prior analysis, screenshots, design images, HAR or Charles logs, or zipped artifacts need to be turned into one or more concrete fix or feature approaches, with affected areas, risks, edge cases, and test planning, while explicitly stopping short of implementation.
 progressive_disclosure:
   entry_point:
@@ -16,13 +16,15 @@ progressive_disclosure:
     - references/title-format-guide.md
 ---
 
-# Fix Planner
+# Ticket Planner
 
 ## Overview
 
 Use this skill to convert ticket analysis into a practical implementation plan before coding starts. Read Jira data through MCP when available, accept a previous analysis as the main input, use screenshots or logs as supporting evidence, and produce one or more concrete approaches with risks, affected areas, and suggested tests.
 
 Keep the workflow planning-only. Recommend how the work should likely be implemented, but do not write code, patch files, or present implementation snippets unless a later prompt explicitly requests it.
+
+Always respond in the user's current language. If the user writes in Vietnamese, reply in Vietnamese. If the user writes in English, reply in English. Keep technical terms in their original form when that is clearer.
 
 ## When to Use This Skill
 
@@ -170,6 +172,6 @@ Stop and correct course when:
 ## Integration Notes
 
 - Use with Jira MCP to refresh ticket facts when needed.
-- Pair naturally with `ticket-analyzer` as the preceding step.
+- Pair naturally with `ticket-analysis` as the preceding step.
 - Use image or artifact inspection tools only to support planning decisions.
 - Hand off to implementation-oriented skills only after the user approves the plan.

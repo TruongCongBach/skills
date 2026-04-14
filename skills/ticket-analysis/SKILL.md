@@ -1,5 +1,5 @@
 ---
-name: ticket-analyzer
+name: ticket-analysis
 description: Analyze Jira tickets before implementation. This skill should be used when a ticket needs triage, impact analysis, screenshot or design-image review, HAR or Charles or zipped-log inspection, fix-direction planning, or a readiness decision before coding begins. It is analysis-only and must not start implementation unless explicitly requested later.
 progressive_disclosure:
   entry_point:
@@ -16,13 +16,15 @@ progressive_disclosure:
     - references/title-format-guide.md
 ---
 
-# Ticket Analyzer
+# Ticket Analysis
 
 ## Overview
 
 Use this skill to triage a ticket before implementation starts. Read Jira ticket data through MCP, inspect screenshots or design images when present, inspect HAR or Charles or zipped logs when present, and produce a concise engineering analysis that helps decide whether the ticket is ready for coding.
 
 Keep the workflow analysis-only. Propose likely causes, affected areas, and fix directions, but do not edit code or start implementation unless a later prompt explicitly asks for it.
+
+Always respond in the user's current language. If the user writes in Vietnamese, reply in Vietnamese. If the user writes in English, reply in English. Keep technical terms in their original form when that is clearer.
 
 ## When to Use This Skill
 

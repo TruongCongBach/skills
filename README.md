@@ -2,29 +2,31 @@
 
 Personal Codex skills repository for daily ticket work in React Native and Next.js projects. Each skill is a self-contained folder with a `SKILL.md` file, optional `references/`, and optional helper scripts.
 
+The ticket workflow skills are written to mirror the user's current language automatically. If the conversation is in Vietnamese, the skill should respond in Vietnamese. If the conversation is in English, the skill should respond in English.
+
 ## Available Skills
 
 | Skill | Purpose |
 |-------|---------|
 | [clean-code-agent](./skills/clean-code-agent/) | Foundational coding discipline for implementation work |
-| [ticket-analyzer](./skills/ticket-analyzer/) | Triage a Jira ticket before coding and decide if it is ready for implementation |
-| [fix-planner](./skills/fix-planner/) | Propose implementation approaches after analysis and before coding |
-| [implementation-reviewer](./skills/implementation-reviewer/) | Review completed implementation against Jira, UX, and engineering quality |
-| [scoped-commit-helper](./skills/scoped-commit-helper/) | Prepare and optionally perform a safe Jira-scoped commit using only relevant files |
-| [change-summarizer](./skills/change-summarizer/) | Summarize the completed change for engineers and QA handoff |
-| [ticket-closure-helper](./skills/ticket-closure-helper/) | Prepare the final Jira closure comment and QA closure note after approval |
+| [ticket-analysis](./skills/ticket-analysis/) | Triage a Jira ticket before coding and decide if it is ready for implementation |
+| [ticket-planner](./skills/ticket-planner/) | Propose implementation approaches after analysis and before coding |
+| [ticket-review](./skills/ticket-review/) | Review completed implementation against Jira, UX, and engineering quality |
+| [ticket-commit](./skills/ticket-commit/) | Prepare and optionally perform a safe Jira-scoped commit using only relevant files |
+| [ticket-summary](./skills/ticket-summary/) | Summarize the completed change for engineers and QA handoff |
+| [ticket-close](./skills/ticket-close/) | Prepare the final Jira closure comment and QA closure note after approval |
 
 ## Recommended Workflow
 
 Use the skills in this order for the cleanest handoff chain:
 
-1. `ticket-analyzer`
-2. `fix-planner`
+1. `ticket-analysis`
+2. `ticket-planner`
 3. `clean-code-agent`
-4. `implementation-reviewer`
-5. `scoped-commit-helper`
-6. `change-summarizer`
-7. `ticket-closure-helper`
+4. `ticket-review`
+5. `ticket-commit`
+6. `ticket-summary`
+7. `ticket-close`
 
 Load the workflow guide in [docs/daily-workflow.md](./docs/daily-workflow.md) for stage-by-stage intent and handoff boundaries.
 
@@ -34,12 +36,12 @@ Some skills are intentionally close together, so explicit invocation is the safe
 
 Use prompts like:
 
-- `Use ticket-analyzer to triage this Jira bug before coding.`
-- `Use fix-planner to compare implementation approaches for this ticket.`
-- `Use implementation-reviewer to review this completed PR against the ticket.`
-- `Use scoped-commit-helper to prepare a safe commit for this Jira issue.`
-- `Use change-summarizer to write the engineering and QA handoff summary.`
-- `Use ticket-closure-helper to draft the final Jira closure comment.`
+- `Use ticket-analysis to triage this Jira bug before coding.`
+- `Use ticket-planner to compare implementation approaches for this ticket.`
+- `Use ticket-review to review this completed PR against the ticket.`
+- `Use ticket-commit to prepare a safe commit for this Jira issue.`
+- `Use ticket-summary to write the engineering and QA handoff summary.`
+- `Use ticket-close to draft the final Jira closure comment.`
 
 Prompt examples live in [examples/explicit-prompt-examples.md](./examples/explicit-prompt-examples.md).
 
@@ -69,17 +71,17 @@ npx skills add https://github.com/TruongCongBach/skills
 Install a single skill from the repo with:
 
 ```bash
-npx skills add https://github.com/TruongCongBach/skills --skill ticket-analyzer
+npx skills add https://github.com/TruongCongBach/skills --skill ticket-analysis
 ```
 
 Examples:
 
 ```bash
-npx skills add https://github.com/TruongCongBach/skills --skill fix-planner
-npx skills add https://github.com/TruongCongBach/skills --skill implementation-reviewer
-npx skills add https://github.com/TruongCongBach/skills --skill scoped-commit-helper
-npx skills add https://github.com/TruongCongBach/skills --skill change-summarizer
-npx skills add https://github.com/TruongCongBach/skills --skill ticket-closure-helper
+npx skills add https://github.com/TruongCongBach/skills --skill ticket-planner
+npx skills add https://github.com/TruongCongBach/skills --skill ticket-review
+npx skills add https://github.com/TruongCongBach/skills --skill ticket-commit
+npx skills add https://github.com/TruongCongBach/skills --skill ticket-summary
+npx skills add https://github.com/TruongCongBach/skills --skill ticket-close
 ```
 
 Use the repo root URL, not a GitHub subfolder URL for an individual skill.
@@ -112,19 +114,19 @@ If your Codex setup does not support GitHub installation or `/skills add`, use t
 If you want to avoid loading the whole repo on another machine, install one skill explicitly:
 
 ```bash
-npx skills add https://github.com/TruongCongBach/skills --skill ticket-analyzer
+npx skills add https://github.com/TruongCongBach/skills --skill ticket-analysis
 ```
 
 When the machine already has many other skills, explicit installation plus explicit prompting is the safest setup.
 
 Prompt examples:
 
-- `Use ticket-analyzer to triage this Jira bug before coding.`
-- `Use fix-planner to compare implementation approaches.`
-- `Use implementation-reviewer to review this completed work.`
-- `Use scoped-commit-helper to prepare the commit safely.`
-- `Use change-summarizer to write the engineering handoff.`
-- `Use ticket-closure-helper to draft the final Jira closure comment.`
+- `Use ticket-analysis to triage this Jira bug before coding.`
+- `Use ticket-planner to compare implementation approaches.`
+- `Use ticket-review to review this completed work.`
+- `Use ticket-commit to prepare the commit safely.`
+- `Use ticket-summary to write the engineering handoff.`
+- `Use ticket-close to draft the final Jira closure comment.`
 
 ## Packaging
 

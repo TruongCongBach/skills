@@ -23,6 +23,13 @@ Use implementation-reviewer to review this completed implementation against Jira
 Tell me what is still missing before I approve it.
 ```
 
+## Scoped Commit
+
+```text
+Use scoped-commit-helper for Jira ticket ML-39.
+Inspect the current git changes, recommend only the files that clearly belong to this issue, and prepare the commit title without including uncertain files automatically.
+```
+
 ## Engineering Handoff Summary
 
 ```text

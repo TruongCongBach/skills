@@ -10,6 +10,7 @@ Personal Codex skills repository for daily ticket work in React Native and Next.
 | [ticket-analyzer](./skills/ticket-analyzer/) | Triage a Jira ticket before coding and decide if it is ready for implementation |
 | [fix-planner](./skills/fix-planner/) | Propose implementation approaches after analysis and before coding |
 | [implementation-reviewer](./skills/implementation-reviewer/) | Review completed implementation against Jira, UX, and engineering quality |
+| [scoped-commit-helper](./skills/scoped-commit-helper/) | Prepare and optionally perform a safe Jira-scoped commit using only relevant files |
 | [change-summarizer](./skills/change-summarizer/) | Summarize the completed change for engineers and QA handoff |
 | [ticket-closure-helper](./skills/ticket-closure-helper/) | Prepare the final Jira closure comment and QA closure note after approval |
 
@@ -21,8 +22,9 @@ Use the skills in this order for the cleanest handoff chain:
 2. `fix-planner`
 3. `clean-code-agent`
 4. `implementation-reviewer`
-5. `change-summarizer`
-6. `ticket-closure-helper`
+5. `scoped-commit-helper`
+6. `change-summarizer`
+7. `ticket-closure-helper`
 
 Load the workflow guide in [docs/daily-workflow.md](./docs/daily-workflow.md) for stage-by-stage intent and handoff boundaries.
 
@@ -35,6 +37,7 @@ Use prompts like:
 - `Use ticket-analyzer to triage this Jira bug before coding.`
 - `Use fix-planner to compare implementation approaches for this ticket.`
 - `Use implementation-reviewer to review this completed PR against the ticket.`
+- `Use scoped-commit-helper to prepare a safe commit for this Jira issue.`
 - `Use change-summarizer to write the engineering and QA handoff summary.`
 - `Use ticket-closure-helper to draft the final Jira closure comment.`
 
@@ -74,6 +77,7 @@ Examples:
 ```bash
 npx skills add https://github.com/TruongCongBach/skills --skill fix-planner
 npx skills add https://github.com/TruongCongBach/skills --skill implementation-reviewer
+npx skills add https://github.com/TruongCongBach/skills --skill scoped-commit-helper
 npx skills add https://github.com/TruongCongBach/skills --skill change-summarizer
 npx skills add https://github.com/TruongCongBach/skills --skill ticket-closure-helper
 ```
@@ -118,6 +122,7 @@ Prompt examples:
 - `Use ticket-analyzer to triage this Jira bug before coding.`
 - `Use fix-planner to compare implementation approaches.`
 - `Use implementation-reviewer to review this completed work.`
+- `Use scoped-commit-helper to prepare the commit safely.`
 - `Use change-summarizer to write the engineering handoff.`
 - `Use ticket-closure-helper to draft the final Jira closure comment.`
 

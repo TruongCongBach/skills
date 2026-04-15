@@ -7,6 +7,7 @@
 - Khi cần final Jira comment
 - Khi cần QA closure note
 - Khi muốn ticket history có closure summary ngắn gọn, dễ scan
+- Khi cần giữ lại một security note ngắn gọn trong closure nếu change ảnh hưởng flow nhạy cảm
 
 ## Không dùng khi nào
 
@@ -18,6 +19,7 @@
 
 - Viết final ticket comment gọn, rõ, professional
 - Viết QA handoff note rõ cần verify gì
+- Giữ lại security note nếu QA hoặc future readers cần biết
 - Ghi lại closure summary cho future readers
 
 ## Input thường gặp
@@ -33,6 +35,7 @@
 - QA handoff note
 - What was fixed
 - What QA should verify
+- Security note if relevant
 - Short closure summary
 
 ## Prompt ví dụ

@@ -3,9 +3,9 @@ name: ticket-close
 description: Prepare final Jira closure content after implementation has been reviewed and approved. This skill should be used only when an approved change summary needs to be turned into a concise final ticket comment, QA closure note, closure summary, and status update for future readers, without writing or modifying code.
 progressive_disclosure:
   entry_point:
-    summary: "Turn approved implementation context into clean final Jira closure content, QA handoff notes, and short future-reader summaries."
+    summary: "Turn approved implementation context into clean final Jira closure content, QA handoff notes, short future-reader summaries, and a concise security note when relevant."
     when_to_use: "Use only after the fix or feature is approved and the next step is to leave a clear, consistent final Jira record."
-    quick_start: "1. Read ticket and approved change summary 2. Extract what was fixed and what QA should verify 3. Draft final comment and QA handoff 4. Add concise closure summary and status update 5. Generate final titles"
+    quick_start: "1. Read ticket and approved change summary 2. Extract what was fixed, what QA should verify, and any security note 3. Draft final comment and QA handoff 4. Add concise closure summary and status update 5. Generate final titles"
   references:
     - references/closure-workflow.md
     - references/final-ticket-comment-template.md
@@ -13,13 +13,15 @@ progressive_disclosure:
     - references/closure-summary-template.md
     - references/concise-status-update-template.md
     - references/title-format-guide.md
+    - ../../docs/security/security-risk-checklist.md
+    - ../../docs/security/security-severity-guide.md
 ---
 
 # Ticket Close
 
 ## Overview
 
-Use this skill to create the final communication artifacts for a Jira ticket after the work is approved. Read Jira context when available, accept the approved change summary, and produce a concise final ticket comment, QA closure note, short closure summary, and optional release-note-style summary that future readers can scan quickly.
+Use this skill to create the final communication artifacts for a Jira ticket after the work is approved. Read Jira context when available, accept the approved change summary, and produce a concise final ticket comment, QA closure note, short closure summary, and optional release-note-style summary that future readers can scan quickly. If the approved change touched security-sensitive behavior, preserve the minimum necessary note for QA and future readers.
 
 Keep the workflow closure-only. Do not implement code, re-review the patch, or turn the output into an automated close-ticket action.
 
@@ -52,6 +54,7 @@ Close the communication loop clearly. Explain what was fixed, what QA should ver
 3. **QA-aware wording**: Call out what should be verified directly, not just what changed in code.
 4. **Consistent structure**: Keep ticket comments and handoff notes easy to scan across tickets.
 5. **Future-reader utility**: Make the outcome understandable months later without diff archaeology.
+6. **Security-aware closure**: Mention security-sensitive impact only when it changes QA focus, release notes, or future debugging context.
 
 ## Quick Start
 
@@ -60,7 +63,7 @@ Close the communication loop clearly. Explain what was fixed, what QA should ver
 3. Extract:
    - what was fixed
    - what QA should verify
-   - any risks or follow-up notes
+   - any risks, follow-up notes, or security note if relevant
 4. Draft the final ticket comment using [final-ticket-comment-template](./references/final-ticket-comment-template.md).
 5. Draft the QA handoff note using [qa-handoff-template](./references/qa-handoff-template.md).
 6. Add a short closure summary and concise status update using the reference templates.
@@ -84,6 +87,7 @@ If the approved summary and ticket scope do not align, note the discrepancy inst
 - Prefer concrete wording such as what behavior changed and what QA should verify.
 - Avoid generic statements such as "done" or "fixed issue".
 - Keep risks and notes short, and include them only when they matter.
+- Include a security note only when the ticket changed auth, permissions, data exposure, storage, logging, uploads, or trust-boundary behavior in a way QA or future readers should know.
 - Use release-note-style wording only when the change would make sense outside the immediate ticket context.
 - Keep the short closure summary readable for someone scanning ticket history.
 - Keep the tone professional and low-friction.
@@ -97,6 +101,7 @@ Produce the final closure output in this order:
 - What was fixed
 - What QA should verify
 - Risks / notes if any
+- Security note if relevant
 - Short closure summary
 - Optional release-note-style summary if relevant
 
@@ -137,6 +142,8 @@ Use the short closure summary as:
 - **[Closure Summary Template](./references/closure-summary-template.md)** - Load for a compact future-reader summary.
 - **[Concise Status Update Template](./references/concise-status-update-template.md)** - Load for short completion updates.
 - **[Title Format Guide](./references/title-format-guide.md)** - Load to generate `type: TICKET-ID | summary`.
+- **[Security Risk Checklist](../../docs/security/security-risk-checklist.md)** - Load when the closure note should preserve a small but important security-sensitive context.
+- **[Security Severity Guide](../../docs/security/security-severity-guide.md)** - Load to keep the tone of a security note proportional to its impact.
 
 ## Key Reminders
 
@@ -144,6 +151,7 @@ Use the short closure summary as:
 - Keep the comment easy to scan.
 - Tell QA what to verify, not just what changed.
 - Keep risks and notes brief but explicit when needed.
+- Preserve material security-sensitive context, but do not turn the closure comment into a full review report.
 - Include the Jira ticket ID in suggested titles when available.
 - Do not drift into implementation details unless they explain the outcome.
 
@@ -154,6 +162,7 @@ Stop and correct course when:
 - QA handoff does not say what to verify
 - The closure summary is too long to scan quickly
 - The output repeats the entire implementation summary instead of condensing it
+- A material security-sensitive change is omitted even though it changes QA focus or future debugging context
 - The title does not match `type: TICKET-ID | summary`
 
 ## Integration Notes

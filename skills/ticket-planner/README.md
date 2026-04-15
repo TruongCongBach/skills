@@ -7,6 +7,7 @@
 - Khi ticket đã đủ rõ và bạn cần chọn hướng implement
 - Khi cần compare 1-2 hướng fix hoặc feature approach
 - Khi cần affected areas, risks, edge cases, test plan trước khi code
+- Khi cần chốt security mitigations trước khi implement ở các luồng nhạy cảm
 
 ## Không dùng khi nào
 
@@ -20,12 +21,14 @@
 - Đề xuất approach A/B nếu cần
 - Chỉ ra module/file/area có khả năng bị ảnh hưởng
 - Nêu risks, tradeoffs, state handling, API dependencies
+- Nêu security risks và mitigation nếu ticket đụng auth, permission, token, storage, logging, upload, deep link, WebView
 
 ## Input thường gặp
 
 - Output từ `ticket-analysis`
 - Jira ticket
 - Screenshot/log bổ sung nếu ảnh hưởng tới plan
+- Design-context Markdown từ `python3 scripts/extract_design_context.py ...` nếu plan phụ thuộc screenshot/design image
 
 ## Output mong đợi
 
@@ -34,8 +37,22 @@
 - Recommended approach
 - Affected areas
 - Risks / tradeoffs
+- Security risks / mitigations
 - Suggested tests
-- Recommendation: proceed / needs clarification first
+- Recommendation: proceed / needs clarification first / needs security review
+
+## Hỗ trợ ảnh design
+
+- Không cần cài thêm skill riêng trên máy khác cho phần này
+- Nếu hướng implement phụ thuộc ảnh, ưu tiên dùng design-context Markdown đã parse từ ảnh
+- Lệnh chuẩn:
+
+```bash
+python3 scripts/extract_design_context.py path/to/image.png --include-raw
+```
+
+- Primary engine: OmniParser
+- Fallback engine: MarkItDown
 
 ## Prompt ví dụ
 

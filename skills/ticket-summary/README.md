@@ -7,6 +7,7 @@
 - Khi cần giải thích root cause và fix approach cho người đọc sau
 - Khi cần handoff summary cho QA hoặc engineers
 - Khi muốn ghi lại change mà không bắt người khác đọc toàn bộ diff
+- Khi cần giữ lại security note ngắn gọn cho QA hoặc future engineers nếu change có liên quan
 
 ## Không dùng khi nào
 
@@ -19,6 +20,7 @@
 - Giải thích cause, change, impact
 - Tóm tắt what changed và affected areas
 - Nêu regression risks và QA focus
+- Giữ lại security note nếu nó ảnh hưởng tới verify, rollback, hoặc future debugging
 - Tạo short summary cho ticket history và engineering readers
 
 ## Input thường gặp
@@ -35,6 +37,7 @@
 - What changed
 - Affected areas
 - Regression risks
+- Security note if relevant
 - QA focus areas
 - Short summaries
 

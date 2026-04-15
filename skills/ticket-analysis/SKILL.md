@@ -3,9 +3,9 @@ name: ticket-analysis
 description: Analyze Jira tickets before implementation. This skill should be used when a ticket needs triage, impact analysis, screenshot or design-image review, HAR or Charles or zipped-log inspection, fix-direction planning, or a readiness decision before coding begins. It is analysis-only and must not start implementation unless explicitly requested later.
 progressive_disclosure:
   entry_point:
-    summary: "Read the ticket first, inspect supporting artifacts, identify likely causes and risks, and decide whether the work is ready for implementation."
-    when_to_use: "Use for Jira-first ticket triage, debugging intake, design discrepancy review from screenshots, HAR or Charles artifact review, and engineering planning before any code changes."
-    quick_start: "1. Read Jira data 2. Structure expected vs actual behavior 3. Review images or logs if present 4. Form root-cause hypotheses 5. Propose fix directions and readiness decision 6. Stop before implementation"
+    summary: "Read the ticket first, inspect supporting artifacts, identify likely causes and risks, flag security-sensitive impact, and decide whether the work is ready for implementation."
+    when_to_use: "Use for Jira-first ticket triage, debugging intake, design discrepancy review from screenshots, HAR or Charles artifact review, security-sensitive risk discovery, and engineering planning before any code changes."
+    quick_start: "1. Read Jira data 2. Structure expected vs actual behavior 3. Review images or logs if present 4. Form root-cause hypotheses 5. Check security-sensitive impact 6. Propose fix directions and readiness decision 7. Stop before implementation"
   references:
     - references/analysis-workflow.md
     - references/ticket-analysis-template.md
@@ -14,13 +14,19 @@ progressive_disclosure:
     - references/root-cause-hypothesis-template.md
     - references/readiness-checklist.md
     - references/title-format-guide.md
+    - ../../docs/security/security-risk-checklist.md
+    - ../../docs/security/react-native-security-checklist.md
+    - ../../docs/security/nextjs-security-checklist.md
+    - ../../docs/security/security-severity-guide.md
+    - ../../docs/design/design-extraction-setup.md
+    - ../../docs/design/design-context-template.md
 ---
 
 # Ticket Analysis
 
 ## Overview
 
-Use this skill to triage a ticket before implementation starts. Read Jira ticket data through MCP, inspect screenshots or design images when present, inspect HAR or Charles or zipped logs when present, and produce a concise engineering analysis that helps decide whether the ticket is ready for coding.
+Use this skill to triage a ticket before implementation starts. Read Jira ticket data through MCP, inspect screenshots or design images when present, inspect HAR or Charles or zipped logs when present, and produce a concise engineering analysis that helps decide whether the ticket is ready for coding. Treat security-sensitive changes as part of normal triage, especially when the ticket touches auth, permissions, tokens, storage, logging, personal data, uploads, deep links, WebViews, or server/client boundaries.
 
 Keep the workflow analysis-only. Propose likely causes, affected areas, and fix directions, but do not edit code or start implementation unless a later prompt explicitly asks for it.
 
@@ -53,6 +59,7 @@ Read the ticket first. Anchor every conclusion to evidence from Jira, images, or
 3. **Artifact-aware debugging**: Treat screenshots and logs as first-class inputs, not optional extras.
 4. **Actionable planning**: Produce fix directions, risks, and affected areas that help a human decide whether to begin implementation.
 5. **Readiness gating**: End with a concrete decision: ready to implement or not yet ready.
+6. **Security awareness**: Call out security-sensitive impact early and explicitly. If risk is plausible but unresolved, say so.
 
 ## Quick Start
 
@@ -68,12 +75,14 @@ Read the ticket first. Anchor every conclusion to evidence from Jira, images, or
    - acceptance criteria if present
 2. Normalize the ticket into the standard structure from [ticket-analysis-template](./references/ticket-analysis-template.md).
 3. Review attached or supplied images with the screenshot workflow in [screenshot-review-template](./references/screenshot-review-template.md).
+   When an image matters for UI understanding, execute `python3 ../../scripts/extract_design_context.py path/to/image.png --include-raw` and use the generated Markdown as supporting design context.
 4. Inspect HAR, Charles, zip, JSON, or text logs with [network-log-analysis-template](./references/network-log-analysis-template.md).
    Execute `scripts/inspect_ticket_artifacts.py <path ...>` to summarize common network and log patterns.
 5. Build 2-4 plausible root-cause hypotheses using [root-cause-hypothesis-template](./references/root-cause-hypothesis-template.md).
-6. Map likely affected areas, fix directions, and implementation risks.
-7. Apply [readiness-checklist](./references/readiness-checklist.md) and end with a recommendation.
-8. Generate the standard title string with [title-format-guide](./references/title-format-guide.md) or `scripts/generate_ticket_title.py`.
+6. Check for security-sensitive impact using [security-risk-checklist](../../docs/security/security-risk-checklist.md), plus the React Native or Next.js checklist when relevant.
+7. Map likely affected areas, fix directions, implementation risks, and security considerations.
+8. Apply [readiness-checklist](./references/readiness-checklist.md), use [security-severity-guide](../../docs/security/security-severity-guide.md) when useful, and end with a recommendation.
+9. Generate the standard title string with [title-format-guide](./references/title-format-guide.md) or `scripts/generate_ticket_title.py`.
 
 ## Workflow Rules
 
@@ -85,8 +94,11 @@ Read the ticket first. Anchor every conclusion to evidence from Jira, images, or
   - inferred root causes
   - proposed fix directions
 - For screenshots or design images, describe visible issues and likely state problems without claiming pixel-perfect certainty.
+- Prefer normalized design-context Markdown from `../../scripts/extract_design_context.py` when screenshots or design images materially affect the ticket.
 - For logs and traffic captures, summarize failed requests, slow requests, duplicate requests, suspicious payloads, and notable error patterns.
 - For React Native and Next.js tickets, call out likely frontend, navigation, API, caching, auth, state, form, rendering, and environment boundaries when relevant.
+- Explicitly check whether the ticket may affect auth, permissions, session handling, tokens, PII, secure storage, analytics or logging leakage, input validation, uploads, deep links, WebViews, or server/client trust boundaries.
+- If security relevance is plausible but not confirmed, add it to `Missing information / ambiguities` and say `needs security review` in the recommendation rationale.
 - Keep the output concise enough for daily triage, but complete enough for handoff.
 
 ## Output Contract
@@ -99,6 +111,7 @@ Produce the final analysis in this order:
 - Missing information / ambiguities
 - Design/UI findings if image exists
 - Network/log findings if logs exist
+- Security considerations
 - Likely root causes
 - Proposed fix directions
 - Affected areas
@@ -120,6 +133,14 @@ Use Jira MCP to load the issue and extract the smallest useful set of fields fir
 ### Screenshots or Design Images
 
 Inspect the image directly when it is available in the conversation or as a local path. Focus on visible layout defects, component state, copy mismatches, loading or empty states, error states, spacing inconsistencies, and platform-specific clues. State assumptions explicitly.
+
+When better UI context is needed, execute:
+
+```bash
+python3 ../../scripts/extract_design_context.py path/to/design.png --include-raw
+```
+
+Use the output as structured supporting context. Prefer OmniParser when configured. Fall back to MarkItDown when only OCR or rough screen text is available.
 
 ### HAR, Charles, Zip, or Logs
 
@@ -143,6 +164,12 @@ Use the script output as input evidence, not as the final answer by itself.
 - **[Root Cause Hypothesis Template](./references/root-cause-hypothesis-template.md)** - Load when several explanations are plausible and tradeoffs need to be compared.
 - **[Readiness Checklist](./references/readiness-checklist.md)** - Load before the final recommendation.
 - **[Title Format Guide](./references/title-format-guide.md)** - Load to generate `type: TICKET-ID | summary` strings consistently.
+- **[Security Risk Checklist](../../docs/security/security-risk-checklist.md)** - Load when the ticket touches auth, data, tokens, logging, uploads, WebViews, or trust boundaries.
+- **[React Native Security Checklist](../../docs/security/react-native-security-checklist.md)** - Load for RN-specific storage, deep link, WebView, and device-surface checks.
+- **[Next.js Security Checklist](../../docs/security/nextjs-security-checklist.md)** - Load for Next.js-specific server/client, auth, headers, caching, and exposure checks.
+- **[Security Severity Guide](../../docs/security/security-severity-guide.md)** - Load to describe low, medium, and high security risk clearly.
+- **[Design Extraction Setup](../../docs/design/design-extraction-setup.md)** - Load when you need to turn a screenshot or design image into structured Markdown before analysis.
+- **[Design Context Template](../../docs/design/design-context-template.md)** - Load when you need a normalized note that preserves visible text, elements, layout hints, and limits.
 
 ## Key Reminders
 
@@ -151,6 +178,7 @@ Use the script output as input evidence, not as the final answer by itself.
 - Mark missing information instead of filling gaps with certainty.
 - Propose fix directions without writing code.
 - Keep summaries concise and engineer-readable.
+- Do not ignore security-sensitive surface area just because the ticket looks UI-heavy.
 - Prefer `fix` for bug tickets and `feat` for feature tickets when type is uncertain.
 - Always include the Jira ticket ID in the suggested title when available.
 - End with a readiness decision, not a vague summary.
@@ -163,6 +191,7 @@ Stop and correct course when:
 - Ignoring ticket comments or acceptance criteria
 - Claiming exact design dimensions from a screenshot alone
 - Dumping raw logs without extracting patterns
+- Ignoring an auth, permission, token, PII, storage, logging, validation, upload, deep-link, or WebView implication
 - Recommending implementation even though core behavior is still ambiguous
 - Omitting the final readiness recommendation
 - Generating a title that does not match `type: TICKET-ID | summary`

@@ -4,6 +4,14 @@
 
 Use this template when a screenshot or design image accompanies the ticket.
 
+When the image is central to the ticket, prefer generating a normalized design note first:
+
+```bash
+python3 ../../scripts/extract_design_context.py path/to/image.png --include-raw
+```
+
+Then use that Markdown note alongside the original image.
+
 ## What to Inspect
 
 - visible screen or route
@@ -21,6 +29,7 @@ Use this template when a screenshot or design image accompanies the ticket.
 ```markdown
 Design/UI findings
 - Image type: screenshot | design image | unknown
+- Design context note: path/to/design-context.md | inline summary
 - Visible context: ...
 - Observed issue: ...
 - Likely impacted component or screen: ...

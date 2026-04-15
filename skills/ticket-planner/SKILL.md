@@ -3,9 +3,9 @@ name: ticket-planner
 description: Create implementation plans after ticket analysis but before coding. This skill should be used when a Jira ticket, prior analysis, screenshots, design images, HAR or Charles logs, or zipped artifacts need to be turned into one or more concrete fix or feature approaches, with affected areas, risks, edge cases, and test planning, while explicitly stopping short of implementation.
 progressive_disclosure:
   entry_point:
-    summary: "Turn ticket analysis into concrete implementation approaches, affected areas, and test preparation without writing code."
-    when_to_use: "Use after triage or investigation is complete enough to compare fix directions, estimate impact, and decide whether implementation should proceed."
-    quick_start: "1. Load ticket and prior analysis 2. Confirm the problem and constraints 3. Propose approach A and B if relevant 4. Map affected modules and dependencies 5. List risks, edge cases, and tests 6. End with proceed or needs clarification"
+    summary: "Turn ticket analysis into concrete implementation approaches, affected areas, security mitigations, and test preparation without writing code."
+    when_to_use: "Use after triage or investigation is complete enough to compare fix directions, estimate impact, include security-sensitive constraints, and decide whether implementation should proceed."
+    quick_start: "1. Load ticket and prior analysis 2. Confirm the problem and constraints 3. Propose approach A and B if relevant 4. Map affected modules and dependencies 5. List risks, security mitigations, edge cases, and tests 6. End with proceed, needs clarification, or needs security review"
   references:
     - references/planning-workflow.md
     - references/fix-planning-template.md
@@ -14,13 +14,19 @@ progressive_disclosure:
     - references/nextjs-planning-checklist.md
     - references/edge-case-checklist.md
     - references/title-format-guide.md
+    - ../../docs/security/security-risk-checklist.md
+    - ../../docs/security/react-native-security-checklist.md
+    - ../../docs/security/nextjs-security-checklist.md
+    - ../../docs/security/security-severity-guide.md
+    - ../../docs/design/design-extraction-setup.md
+    - ../../docs/design/design-context-template.md
 ---
 
 # Ticket Planner
 
 ## Overview
 
-Use this skill to convert ticket analysis into a practical implementation plan before coding starts. Read Jira data through MCP when available, accept a previous analysis as the main input, use screenshots or logs as supporting evidence, and produce one or more concrete approaches with risks, affected areas, and suggested tests.
+Use this skill to convert ticket analysis into a practical implementation plan before coding starts. Read Jira data through MCP when available, accept a previous analysis as the main input, use screenshots or logs as supporting evidence, and produce one or more concrete approaches with risks, affected areas, suggested tests, and security mitigations when the work touches sensitive surfaces.
 
 Keep the workflow planning-only. Recommend how the work should likely be implemented, but do not write code, patch files, or present implementation snippets unless a later prompt explicitly requests it.
 
@@ -52,18 +58,21 @@ Plan from evidence, not intuition. Use the ticket and prior analysis as the base
 3. **Option-aware decision making**: Provide approach A and approach B when the tradeoff is real.
 4. **Risk-led scope control**: Surface regressions, migration costs, edge cases, and dependencies early.
 5. **Test preparedness**: End with suggested tests that should exist before or alongside implementation.
+6. **Security-aware planning**: When the work touches auth, permissions, tokens, storage, validation, uploads, logging, or trust boundaries, call out mitigations before coding starts.
 
 ## Quick Start
 
 1. Read the Jira issue via MCP when available and capture ticket ID, issue type, summary, status, priority, and constraints.
 2. Accept previous ticket analysis as the main problem definition.
 3. Re-check screenshots, design images, logs, or artifacts only as supporting evidence when they materially affect the plan.
+   When screenshot detail matters, execute `python3 ../../scripts/extract_design_context.py path/to/image.png --include-raw` and use the resulting Markdown note rather than ad-hoc OCR text.
 4. Restate the problem to solve in one concise engineering paragraph or bullet set.
 5. Propose approach A and approach B when the alternatives are meaningfully different.
 6. Map likely affected modules, files, or areas, including state handling and API/data dependencies.
-7. List risks, tradeoffs, edge cases, and suggested tests to prepare.
-8. End with `proceed` or `needs clarification first`.
-9. Generate the standard title string from [title-format-guide](./references/title-format-guide.md) or `scripts/generate_plan_title.py`.
+7. Assess security-sensitive boundaries with [security-risk-checklist](../../docs/security/security-risk-checklist.md) and the framework-specific checklist when relevant.
+8. List risks, security mitigations, tradeoffs, edge cases, and suggested tests to prepare.
+9. End with `proceed`, `needs clarification first`, or `needs security review`.
+10. Generate the standard title string from [title-format-guide](./references/title-format-guide.md) or `scripts/generate_plan_title.py`.
 
 ## Input Priority
 
@@ -82,8 +91,11 @@ If supporting artifacts contradict the prior analysis, call out the contradictio
 - Distinguish clearly between confirmed constraints and planning assumptions.
 - Prefer one recommended approach, but include an alternative when the decision is not obvious.
 - Keep file and module references likely, not absolute, unless confirmed by the codebase or ticket context.
+- Prefer parser-normalized design context over free-form screenshot interpretation when choosing a UI implementation approach.
 - For React Native work, think through navigation, async state, platform-specific behavior, gesture and keyboard interactions, offline and retry behavior, and native-module boundaries when relevant.
 - For Next.js work, think through server/client boundaries, routing, caching, revalidation, auth, loading and error states, SEO, and deployment environment behavior when relevant.
+- Explicitly plan around auth, permissions, role checks, token handling, secure storage, PII exposure, analytics or log leakage, input validation, upload paths, deep links, WebViews, and trusted vs untrusted data boundaries when relevant.
+- If the approach depends on a sensitive assumption that is not confirmed, flag `needs security review` instead of pretending the plan is safe.
 - Use screenshots or logs to shape the plan, not to overstate certainty.
 - Keep the output short enough to approve quickly, but specific enough that an engineer can start implementation from the plan.
 
@@ -98,10 +110,11 @@ Produce the final planning output in this order:
 - Likely affected modules / files / areas
 - State handling to consider
 - API/data dependencies
+- Security risks / mitigations
 - Risks / tradeoffs
 - Edge cases
 - Suggested tests to prepare
-- Recommendation: proceed / needs clarification first
+- Recommendation: proceed / needs clarification first / needs security review
 
 Also include:
 - Suggested title
@@ -145,6 +158,12 @@ Keep the wording probabilistic when certainty is limited.
 - **[Next.js Planning Checklist](./references/nextjs-planning-checklist.md)** - Load for Next.js-specific routing, server/client, caching, and deployment planning.
 - **[Edge Case Checklist](./references/edge-case-checklist.md)** - Load to challenge the proposed approach before implementation.
 - **[Title Format Guide](./references/title-format-guide.md)** - Load to generate `type: TICKET-ID | summary`.
+- **[Security Risk Checklist](../../docs/security/security-risk-checklist.md)** - Load when the ticket touches auth, data, storage, logging, uploads, or trust boundaries.
+- **[React Native Security Checklist](../../docs/security/react-native-security-checklist.md)** - Load for RN-specific storage, deep link, WebView, and device-surface planning.
+- **[Next.js Security Checklist](../../docs/security/nextjs-security-checklist.md)** - Load for Next.js-specific auth, server/client, exposure, and caching planning.
+- **[Security Severity Guide](../../docs/security/security-severity-guide.md)** - Load to describe security impact and mitigation urgency consistently.
+- **[Design Extraction Setup](../../docs/design/design-extraction-setup.md)** - Load when screenshots or design images need to be converted into structured Markdown before planning.
+- **[Design Context Template](../../docs/design/design-context-template.md)** - Load when you need a normalized design note to reason about layout, text, and interaction clues.
 
 ## Key Reminders
 
@@ -154,7 +173,7 @@ Keep the wording probabilistic when certainty is limited.
 - Prefer concise bullet points over long essays.
 - State assumptions explicitly when artifacts are incomplete.
 - Include a second approach only when it adds real decision value.
-- Always end with `proceed` or `needs clarification first`.
+- Always end with `proceed`, `needs clarification first`, or `needs security review`.
 - Always include the Jira ticket ID in the suggested title when available.
 
 ## Red Flags - STOP
@@ -164,6 +183,7 @@ Stop and correct course when:
 - Presenting only one approach when tradeoffs are clearly unresolved
 - Listing affected files with false certainty
 - Ignoring state handling or API dependencies for UI-heavy tickets
+- Ignoring a material auth, permission, token, storage, logging, upload, validation, deep-link, WebView, or server/client boundary risk
 - Ignoring screenshots or logs that materially change the plan
 - Recommending `proceed` even though the required constraints are still ambiguous
 - Forgetting the suggested tests section

@@ -4,6 +4,12 @@ Personal Codex skills repository for daily ticket work in React Native and Next.
 
 The ticket workflow skills are written to mirror the user's current language automatically. If the conversation is in Vietnamese, the skill should respond in Vietnamese. If the conversation is in English, the skill should respond in English.
 
+Security risk assessment is treated as a cross-cutting layer across the workflow rather than a separate skill. `ticket-analysis` flags security-sensitive impact, `ticket-planner` proposes mitigations, `ticket-review` checks security findings, and `ticket-summary` or `ticket-close` preserve only the security context that future readers still need.
+
+Design-image handling is also integrated into the workflow. `ticket-analysis` and `ticket-planner` can turn screenshots or design images into structured Markdown through [scripts/extract_design_context.py](./scripts/extract_design_context.py), with OmniParser as the preferred engine and MarkItDown as the fallback.
+
+No extra skill is required for design-image extraction on another machine. The existing ticket skills already know how to call the wrapper script. What the other machine may need is optional parser tooling such as OmniParser or MarkItDown.
+
 ## Available Skills
 
 | Skill | Purpose |
@@ -29,6 +35,7 @@ Use the skills in this order for the cleanest handoff chain:
 7. `ticket-close`
 
 Load the workflow guide in [docs/daily-workflow.md](./docs/daily-workflow.md) for stage-by-stage intent and handoff boundaries.
+Load the shared security references in [docs/security/](./docs/security/) when the ticket touches auth, permissions, tokens, storage, logging, uploads, deep links, WebViews, or server/client trust boundaries.
 
 ## Avoiding Skill Confusion
 
@@ -108,6 +115,69 @@ git pull
 ```
 
 If your Codex setup does not support GitHub installation or `/skills add`, use the cloned repo as the source of truth and copy or symlink individual folders from `skills/<skill-name>/` into the local skills directory that your client reads.
+
+## Extra Setup For Design Images On Other Machines
+
+You do **not** need to install another skill for screenshot or design-image parsing.
+
+You only need:
+
+1. This skills repo
+2. Optional parser tooling on that machine if you want higher-quality design extraction
+
+Recommended parser setup:
+
+- Preferred: OmniParser
+- Fallback: MarkItDown
+
+Quick guidance:
+
+- If the machine only uses normal ticket text and no design images, no extra setup is needed.
+- If the machine needs image-to-Markdown support for UI work, configure OmniParser or install MarkItDown.
+
+See:
+
+- [docs/design/design-extraction-setup.md](./docs/design/design-extraction-setup.md)
+
+Typical setup choices:
+
+### Option A: Best Quality
+
+Install or run OmniParser separately on that machine, then set one of:
+
+```bash
+export OMNIPARSER_URL="http://localhost:7860/process_image"
+```
+
+or
+
+```bash
+export OMNIPARSER_CMD="python /absolute/path/to/your_omniparser_wrapper.py --json"
+```
+
+### Option B: Easier Fallback
+
+Install MarkItDown:
+
+```bash
+pip install 'markitdown[all]'
+```
+
+or ensure:
+
+```bash
+uvx markitdown path/to/file.png
+```
+
+### Test The Setup
+
+After setup, verify with:
+
+```bash
+python3 scripts/extract_design_context.py path/to/image.png --include-raw
+```
+
+If the machine is configured correctly, the script will output a structured Markdown note the ticket skills can reuse.
 
 ## Installing Only One Skill
 
